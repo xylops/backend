@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "a backend sevice including REST, Socket.io, mongodb, authentication",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

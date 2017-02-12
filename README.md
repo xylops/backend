@@ -1,9 +1,9 @@
-Nodejs Backend template including the following function
+Nodejs Backend template including the following function (Developing)
 
 **Function**
 * RESTAPI (expressjs)
 * Logging (Wistonjs)
-* Authentication (using bcrypt, JWT token)
+* Authentication (bcrypt, JWT token)
 * Database (Mongodb, mongoose)
 * RealTime websocket (Socket.io)
-* GUI for managing users
+* GUI for managing users (handlebars)
