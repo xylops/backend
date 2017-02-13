@@ -7,6 +7,7 @@ var morgan      = require('morgan');
 
 //Routing
 var initialization = require('./route')
+var auth = require('./route/authentication')
 var apiRoute = require('./route/api')
 
 //setting View Engine using Handlebars
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 app.use('/', initialization);
 
 //Routing for API
+app.use('/auth', auth) //for creating users and authenticating login
 app.use('/api', apiRoute)
 
 // =======================
