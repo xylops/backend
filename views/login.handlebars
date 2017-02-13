@@ -1,0 +1,81 @@
+<style>
+     body{
+         background: url('http://www.planwallpaper.com/static/images/abstract_color_background_picture_8016-wide.jpg') no-repeat center center fixed;
+         -webkit-background-size: cover;
+         -moz-background-size: cover;
+         -o-background-size: cover;
+         background-size: cover;
+     }
+     .container{
+         text-align:center;
+         width:40%;
+         margin-top:15vw;
+     }
+     span{
+         color:white;
+     }
+     .col-md-4{
+         text-align: left;
+     }
+     p{
+         color:white;
+         font-size:30px;
+         font-weight:bold;
+         margin-bottom: 10px;
+     }
+     label{
+         color:white;
+     }
+     input{
+         width:100%;
+     }
+     input[type=submit] {
+         width: 100%;
+         background-color: #4CAF50;
+         color: white;
+         padding: 14px 20px;
+         margin: 8px 0;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+     }
+     input[type=submit]:hover {
+         background-color: #45a049;
+     }
+ </style>
+<div class="container">
+    <p>Ulysses ERP System</p>
+    <br/>
+    <div class="row">
+        <div class="col-md-6">
+            <span>Admin Account</span></br>
+            <span>Username: admin / Password: admin</span>
+        </div>
+        <div class="col-md-6">
+            <span>Guest Account</span></br>
+            <span>Username: guest / Password: guest</span>
+        </div>
+    </div>
+    <br/>
+    <form class="" action="" method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="id">Username</label>
+            </div>
+            <div class="col-md-8">
+                <input type="text" name="id">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="pw">Password</label>
+            </div>
+            <div class="col-md-8">
+                <input type="password" name="pw">
+            </div>
+        </div>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
