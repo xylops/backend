@@ -3,13 +3,24 @@ var router = express.Router();
 var mongoose    = require('mongoose');
 
 var config = require('../config');
-//connect to database
+//connect to database and set auto reconnect
 mongoose.Promise = global.Promise;
-mongoose.connect(config.database, (err, database)=>{
-    if (err) return console.log(err)
-    db = database;
-    console.log('connnect to db through mongoose');
-})
+mongoose.connection.on("open", function(ref) {
+  return console.log("Connected to mongo server!");
+});
+
+mongoose.connection.on("error", function(err) {
+  console.log("Could not connect to mongo server!");
+  return console.log(err.message.red);
+});
+
+try {
+  mongoose.connect("mongodb://" + config.database);
+  db = mongoose.connection;
+  console.log("Started connection on " + config.database);
+} catch (err) {
+  console.log("Setting up failed to connect to " + config.database);
+}
 
 //routing for pages
 router.get('/', function(req, res, next){
