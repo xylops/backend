@@ -76,6 +76,26 @@
             </div>
         </div>
         <br>
-        <input type="submit" value="Submit">
     </form>
+    <button id="submit">Login</button>
 </div>
+<script type="text/javascript">
+    $("#submit").click(function(e) {
+        e.preventDefault();
+        axios({
+            method: 'post',
+            url: '/auth/authenticate',
+            data: {
+                id: 'admin',
+                pw: 'admin'
+            },
+            json: true
+        }).then(function(res) {
+            if (res.data.message === 'Enjoy your token!!!!!') {
+                console.log(res.data.token)
+                xhr.setRequestHeader('x-access-token', res.data.token)
+
+            }
+        })
+    });
+</script>

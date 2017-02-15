@@ -21,10 +21,14 @@ try {
 } catch (err) {
   console.log("Setting up failed to connect to " + config.database);
 }
-
-//routing for pages
 router.get('/', function(req, res, next){
-    res.render('index', { title: 'Hey', message: 'Hello This is the backend page!' })
+    res.render('index')
+})
+//routing for pages
+router.get('/dashboard', ensureAuthenticated,  function(req, res, next){
+    console.log(req)
+
+    res.render('dashboard', { title: 'Hey', message: 'Hello This is the backend page!' })
 })
 
 router.get('/register', function(req, res) {
@@ -34,6 +38,11 @@ router.get('/register', function(req, res) {
 router.get('/login', function(req, res, next){
     res.render('login')
 })
+
+function ensureAuthenticated (req, res, next){
+
+    next()
+}
 
 
 module.exports = router

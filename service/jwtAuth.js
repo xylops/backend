@@ -1,5 +1,6 @@
 var config = require('../config'); // get our config file
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
+var User = require('../models/user')
 
 module.exports = function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -14,9 +15,19 @@ module.exports = function (req, res, next) {
                     message: 'Failed to authenticate token.'
                 });
             } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
+                User.findOne({token: token}, function(err, user){
+                    if(err) throw err;
+                    // if everything is good, save to request for use in other routes
+                    if(user){
+                        req.decoded = decoded;
+                        next();
+                    }else{
+                        return res.json({
+                            success: false,
+                            message: 'Failed to authenticate token.'
+                        });
+                    }
+                })
             }
         });
 

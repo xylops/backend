@@ -44,10 +44,7 @@ router.post('/register', function(req, res){
             res.json({success: false, message: 'user already exist' })
         }
     })
-
-
 })
-
 
 router.post('/authenticate', function(req, res) {
     // find the user
@@ -76,13 +73,16 @@ router.post('/authenticate', function(req, res) {
                     }, config.secret, {
                         //jwt options
                         algorithm: 'HS256',
-                        expiresIn: config.tokenExpiredIn
+                        expiresIn: config.tokenExpiredIn,
                     }, function(err, token) {
-                        res.json({
-                            success: true,
-                            message: 'Enjoy your token!!!!!',
-                            token: token
-                        });
+                        User.findOneAndUpdate({name: user.name}, {$set:{token: token}}, {upsert: true}, function(err, data){
+                            if(err) throw err;
+                            return res.json({
+                                success: true,
+                                message: 'Enjoy your token!!!!!',
+                                token: token
+                            });
+                        })
                     })
                 } else {
                     res.json({
@@ -97,17 +97,17 @@ router.post('/authenticate', function(req, res) {
 
 router.post('/refreshToken', function(req, res, next){
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    var prevToken = token;
 
     if( token ){
         jwt.verify( token, config.secret, function(err, decoded) {
-
             var payload = jwt.decode(token);
             var currentTime = ( moment().format('x') )/1000;
 
             if(err){                                        // check if there are any error with toke
                 if (err.name === 'TokenExpiredError' ) {    //check if error is cause by token expired
 
-                    if(!payload.firstTokenIssueAt){         //if it is the first time for the token to be refresh
+                    if(!payload.firstTokenIssueAt){
                         var tokenTime = ( moment(err.expiredAt).format('x') )/1000;
                     } else {
                         var tokenTime = payload.firstTokenIssueAt;
@@ -121,13 +121,16 @@ router.post('/refreshToken', function(req, res, next){
                     if(forceExpired){
                         jwt.sign(payload, config.secret, {
                             algorithm: 'HS256',
-                            expiresIn: config.tokenExpiredIn
+                            expiresIn: config.tokenExpiredIn,
                         }, function(err, token) {
-                            return res.json({
-                                success: true,
-                                message: 'Enjoy your token!!!!!',
-                                token: token
-                            });
+                            User.findOneAndUpdate({name: payload.user.name}, {$set:{token: token}}, {upsert: true}, function(err, data){
+                                if(err) throw err
+                                return res.json({
+                                    success: true,
+                                    message: 'Enjoy your token!!!!!',
+                                    token: token
+                                });
+                            })
                         })
                     }else{
                         return res.json({
@@ -143,7 +146,7 @@ router.post('/refreshToken', function(req, res, next){
                     });
                 }
             }else{
-                
+
                 if(payload.firstTokenIssueAt){
                     var firstTokenIssueAt = payload.firstTokenIssueAt
                 }else{
@@ -158,11 +161,14 @@ router.post('/refreshToken', function(req, res, next){
                     algorithm: 'HS256',
                     expiresIn: config.tokenExpiredIn
                 }, function(err, token) {
-                    return res.json({
-                        success: true,
-                        message: 'Enjoy your token!!!!!',
-                        token: token
-                    });
+                    User.findOneAndUpdate({name: payload.user.name}, {$set:{token: token}}, {upsert: true}, function(err, data){
+                        if(err) throw err
+                        return res.json({
+                            success: true,
+                            message: 'Enjoy your token!!!!!',
+                            token: token
+                        });
+                    })
                 })
             }
 

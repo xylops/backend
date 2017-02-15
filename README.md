@@ -7,3 +7,6 @@ Nodejs Backend template including the following function (Developing)
 * Database (Mongodb, mongoose)
 * RealTime websocket (Socket.io)
 * GUI for managing users (handlebars)
+
+**PS**
+* refreshing token are handled by front end
