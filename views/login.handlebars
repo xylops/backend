@@ -80,6 +80,22 @@
     <button id="submit">Login</button>
 </div>
 <script type="text/javascript">
+
+
+    const setToken = (token) => {
+        // if token is provided, save it in localStorage and add it to axios header as well.
+        if ( token ) {
+            localStorage.token = token
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+        // if token is empty, just remove it from localStorage and axios..
+        // set empty token when you logout the user.
+        else {
+            delete localStorage.token;
+            delete axios.defaults.headers.common['Authorization'];
+        }
+    }
+
     $("#submit").click(function(e) {
         e.preventDefault();
         axios({
@@ -88,14 +104,11 @@
             data: {
                 id: 'admin',
                 pw: 'admin'
-            },
-            json: true
-        }).then(function(res) {
-            if (res.data.message === 'Enjoy your token!!!!!') {
-                console.log(res.data.token)
-                xhr.setRequestHeader('x-access-token', res.data.token)
-
             }
+        }).then(function(res){
+            var head = 'x-access-token'
+            document.cookie= res.headers['x-access-token']
+            window.location.href = "http://localhost:3000/api";
         })
     });
 </script>

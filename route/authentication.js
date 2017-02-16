@@ -77,6 +77,7 @@ router.post('/authenticate', function(req, res) {
                     }, function(err, token) {
                         User.findOneAndUpdate({name: user.name}, {$set:{token: token}}, {upsert: true}, function(err, data){
                             if(err) throw err;
+                            res.setHeader('x-access-token', token)
                             return res.json({
                                 success: true,
                                 message: 'Enjoy your token!!!!!',
@@ -97,7 +98,6 @@ router.post('/authenticate', function(req, res) {
 
 router.post('/refreshToken', function(req, res, next){
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    var prevToken = token;
 
     if( token ){
         jwt.verify( token, config.secret, function(err, decoded) {
@@ -138,7 +138,6 @@ router.post('/refreshToken', function(req, res, next){
                             message: 'Expired token.'
                         });
                     }
-
                 } else {
                     return res.json({
                         success: false,

@@ -24,6 +24,7 @@ try {
 router.get('/', function(req, res, next){
     res.render('index')
 })
+
 //routing for pages
 router.get('/dashboard', ensureAuthenticated,  function(req, res, next){
     console.log(req)
